@@ -55,18 +55,18 @@ class PopUp extends React.Component {
     let { title, text, buttonText } = this.state;
 
     return (
-     
       <View style={{ marginTop: 22 }}>
         <Modal animationType="slide" transparent={false}>
           <View style={{ marginTop: 22 }}>
             <View>
               <Text style={{ textAlign: "center" }}>{title}</Text>
 
-              <Text style={{ textAlign: "center", marginTop: 50, marginBottom: 40 }}>{text}</Text>
-              <Button
-                onPress={this.popupHandle}
-                title={buttonText}
-              />
+              <Text
+                style={{ textAlign: "center", marginTop: 50, marginBottom: 40 }}
+              >
+                {text}
+              </Text>
+              <Button onPress={this.popupHandle} title={buttonText} />
             </View>
           </View>
         </Modal>

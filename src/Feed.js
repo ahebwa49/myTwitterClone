@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Button, View, Text } from "react-native";
 import PopUp from "./PopUp";
-
+import Answers from "./Answers";
 import data from "./data/data";
 
 class Main extends React.Component {
@@ -37,7 +37,20 @@ class Main extends React.Component {
         data[nr].answers[3]
       ],
       correct: data[nr].correct,
-      nr: this.state.nr + 1
+      // nr: this.state.nr + 1
+    });
+  }
+
+  handleIncreaseScore() {
+    this.setState({
+      score: this.state.score + 1
+    });
+  }
+
+  handleShowButton() {
+    this.setState({
+      showButton: true,
+      questionAnswered: true
     });
   }
 
@@ -73,12 +86,18 @@ class Main extends React.Component {
         {modalVisible && (
           <PopUp score={score} total={total} startQuiz={this.handleStartQuiz} />
         )}
-        <View>
-          <Text>
-            Question {nr}/{total}
-          </Text>
-          <Text>{question}</Text>
-        </View>
+
+        <Text>
+          Question {nr}/{total}
+        </Text>
+        <Text>{question}</Text>
+        <Answers
+          answers={answers}
+          correct={correct}
+          showButton={this.handleShowButton}
+          isAnswered={questionAnswered}
+          increaseScore={this.handleIncreaseScore}
+        />
       </View>
     );
   }
