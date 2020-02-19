@@ -6,47 +6,62 @@ class Answers extends React.Component {
     super(props);
     this.state = {
       isAnswered: false,
-      classNames: ["", "", "", ""]
+      ids: [1, 2, 3, 4]
     };
 
     this.checkAnswer = this.checkAnswer.bind(this);
   }
 
-  checkAnswer(e) {
-    let { isAnswered } = this.props;
+  checkAnswer(answer) {
+    const { correct, answers } = this.props;
+    const { ids } = this.state;
 
-    if (!isAnswered) {
-      let elem = e.currentTarget;
-      console.log(elem);
-      let { correct, increaseScore } = this.props;
-      let answer = Number(elem.dataset.id);
-      let updatedClassNames = this.state.classNames;
+    let updatedIds = ids;
 
-      if (answer === correct) {
-        updatedClassNames[answer - 1] = "right";
-        increaseScore();
-      } else {
-        updatedClassNames[answer - 1] = "wrong";
-      }
-
-      this.setState({
-        classNames: updatedClassNames
-      });
-
-      this.props.showButton();
+    if (answer === correct) {
+      updatedIds[answer - 1] = 100;
+    } else {
+      updatedIds[answer - 1] = -100;
     }
+
+    this.setState({
+      ids: updatedIds
+    });
+
+    // let { isAnswered } = this.props;
+
+    // if (!isAnswered) {
+    //   let elem = e.currentTarget;
+    //   console.log(elem);
+    //   let { correct, increaseScore } = this.props;
+    //   let answer = Number(elem.dataset.id);
+    //   let updatedClassNames = this.state.classNames;
+
+    //   if (answer === correct) {
+    //     updatedClassNames[answer - 1] = "right";
+    //     increaseScore();
+    //   } else {
+    //     updatedClassNames[answer - 1] = "wrong";
+    //   }
+
+    //   this.setState({
+    //     classNames: updatedClassNames
+    //   });
+
+    //   this.props.showButton();
+    // }
   }
 
-  //   shouldComponentUpdate() {
-  //     this.setState({
-  //       classNames: ["", "", "", ""]
-  //     });
-  //     return true;
-  //   }
+  // shouldComponentUpdate() {
+  //   this.setState({
+  //     classNames: ["", "", "", ""]
+  //   });
+  //   return true;
+  // }
 
   render() {
     let { answers } = this.props;
-    let { classNames } = this.state;
+    let { ids, answerFound } = this.state;
 
     // let transition = {
     //   transitionName: "example",
@@ -58,22 +73,42 @@ class Answers extends React.Component {
       <View style={styles.container}>
         <View style={styles.button}>
           <Text>A </Text>
-          <Button onPress={this.checkAnswer} title={answers[0]} />
+          <Button
+            onPress={() => this.checkAnswer(ids[0])}
+            title={answers[0]}
+            id={ids[0]}
+            color={ids[0] < 0 ? "red" : ids[0] > 10 ? "green" : ""}
+          />
         </View>
 
         <View style={styles.button}>
           <Text>B </Text>
-          <Button onPress={this.checkAnswer} title={answers[1]} />
+          <Button
+            onPress={() => this.checkAnswer(ids[1])}
+            title={answers[1]}
+            id={ids[1]}
+            color={ids[1] < 0 ? "red" : ids[1] > 10 ? "green" : ""}
+          />
         </View>
 
         <View style={styles.button}>
           <Text>C </Text>
-          <Button onPress={this.checkAnswer} title={answers[2]} />
+          <Button
+            onPress={() => this.checkAnswer(ids[2])}
+            title={answers[2]}
+            id={ids[2]}
+            color={ids[2] < 0 ? "red" : ids[2] > 10 ? "green" : ""}
+          />
         </View>
 
         <View style={styles.button}>
           <Text>D </Text>
-          <Button onPress={this.checkAnswer} title={answers[3]} />
+          <Button
+            onPress={() => this.checkAnswer(ids[3])}
+            title={answers[3]}
+            id={ids[3]}
+            color={ids[3] < 0 ? "red" : ids[3] > 10 ? "green" : ""}
+          />
         </View>
       </View>
     );
@@ -84,7 +119,7 @@ const styles = StyleSheet.create({
   button: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 10
+    color: "red"
   },
   container: {
     flex: 1,
