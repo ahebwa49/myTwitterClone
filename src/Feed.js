@@ -13,13 +13,16 @@ class Main extends React.Component {
       showButton: false,
       questionAnswered: false,
       score: 0,
-      displayPopup: "flex",
-      modalVisible: true
+      modalVisible: true,
+      ids: [1, 2, 3, 4],
+      title: "Welcome to Quizz",
+      text: "This is a quiz application built using ReactJS.",
+      buttonText: "Start the quiz"
     };
-    // this.nextQuestion = this.nextQuestion.bind(this);
-    // this.handleShowButton = this.handleShowButton.bind(this);
+    this.nextQuestion = this.nextQuestion.bind(this);
+    this.handleShowButton = this.handleShowButton.bind(this);
     this.handleStartQuiz = this.handleStartQuiz.bind(this);
-    // this.handleIncreaseScore = this.handleIncreaseScore.bind(this);
+    this.handleIncreaseScore = this.handleIncreaseScore.bind(this);
   }
 
   componentWillMount() {
@@ -37,7 +40,7 @@ class Main extends React.Component {
         data[nr].answers[3]
       ],
       correct: data[nr].correct,
-      // nr: this.state.nr + 1
+      nr: this.state.nr + 1
     });
   }
 
@@ -54,9 +57,35 @@ class Main extends React.Component {
     });
   }
 
+  handleIncreaseScore() {
+    this.setState({
+      score: this.state.score + 1
+    });
+  }
+
+  nextQuestion() {
+    let { nr, total, score } = this.state;
+
+    if (nr === total) {
+      this.setState({
+        modalVisible: true,
+        text: `You have completed the quiz \n You got: ${score}/${total} questions right`,
+        title: "Congratulations!",
+        buttonText: "Restart",
+        ids: [1, 2, 3, 4]
+      });
+    } else {
+      this.pushData(nr);
+      this.setState({
+        showButton: false,
+        questionAnswered: false,
+        ids: [1, 2, 3, 4]
+      });
+    }
+  }
+
   handleStartQuiz() {
     this.setState({
-      displayPopup: "none",
       modalVisible: false,
       nr: 1
     });
@@ -73,18 +102,24 @@ class Main extends React.Component {
       questionAnswered,
       displayPopup,
       score,
-      modalVisible
+      modalVisible,
+      ids,
+      title,
+      text,
+      buttonText
     } = this.state;
 
     return (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        {/* <Text>I am the feed :)</Text>
-        <Button
-          onPress={() => this.props.navigation.navigate("Details")}
-          title="Go to detailed tweet"
-        /> */}
         {modalVisible && (
-          <PopUp score={score} total={total} startQuiz={this.handleStartQuiz} />
+          <PopUp
+            score={score}
+            total={total}
+            startQuiz={this.handleStartQuiz}
+            title={title}
+            buttonText={buttonText}
+            text={text}
+          />
         )}
 
         <Text>
@@ -97,7 +132,16 @@ class Main extends React.Component {
           showButton={this.handleShowButton}
           isAnswered={questionAnswered}
           increaseScore={this.handleIncreaseScore}
+          ids={ids}
         />
+        <View>
+          {showButton ? (
+            <Button
+              onPress={this.nextQuestion}
+              title={nr === total ? "Finish quiz" : "Next question"}
+            />
+          ) : null}
+        </View>
       </View>
     );
   }

@@ -5,21 +5,26 @@ class Answers extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isAnswered: false,
-      ids: [1, 2, 3, 4]
+      isAnswered: false
     };
 
     this.checkAnswer = this.checkAnswer.bind(this);
   }
 
+  static getDerivedStateFromProps(props, state) {
+    const { ids } = props;
+    return { ids };
+  }
+
   checkAnswer(answer) {
-    const { correct, answers } = this.props;
+    const { correct, increaseScore } = this.props;
     const { ids } = this.state;
 
     let updatedIds = ids;
 
     if (answer === correct) {
       updatedIds[answer - 1] = 100;
+      increaseScore();
     } else {
       updatedIds[answer - 1] = -100;
     }
@@ -28,40 +33,12 @@ class Answers extends React.Component {
       ids: updatedIds
     });
 
-    // let { isAnswered } = this.props;
-
-    // if (!isAnswered) {
-    //   let elem = e.currentTarget;
-    //   console.log(elem);
-    //   let { correct, increaseScore } = this.props;
-    //   let answer = Number(elem.dataset.id);
-    //   let updatedClassNames = this.state.classNames;
-
-    //   if (answer === correct) {
-    //     updatedClassNames[answer - 1] = "right";
-    //     increaseScore();
-    //   } else {
-    //     updatedClassNames[answer - 1] = "wrong";
-    //   }
-
-    //   this.setState({
-    //     classNames: updatedClassNames
-    //   });
-
-    //   this.props.showButton();
-    // }
+    this.props.showButton();
   }
-
-  // shouldComponentUpdate() {
-  //   this.setState({
-  //     classNames: ["", "", "", ""]
-  //   });
-  //   return true;
-  // }
 
   render() {
     let { answers } = this.props;
-    let { ids, answerFound } = this.state;
+    let { ids } = this.state;
 
     // let transition = {
     //   transitionName: "example",

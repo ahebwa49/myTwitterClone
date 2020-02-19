@@ -1,5 +1,4 @@
-// import React from "react";
-import React, { Component, useState } from "react";
+import React, { Component } from "react";
 
 import {
   Button,
@@ -14,45 +13,22 @@ class PopUp extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      time: "start",
-      title: "Welcome to Quizz",
-      text: "This is a quiz application built using ReactJS.",
-      buttonText: "Start the quiz"
-    };
+    this.state = {};
 
     this.popupHandle = this.popupHandle.bind(this);
   }
 
-  popupHandle() {
-    let { time } = this.state;
-
-    if (time === "start") {
-      this.setState({
-        time: "end",
-        title: "Congratulations!",
-        buttonText: "Restart"
-      });
-
-      this.props.startQuiz();
-    } else {
-      location.reload(); // restart the application
-    }
+  static getDerivedStateFromProps(props, state) {
+    const { title, text, buttonText } = props;
+    return { title, text, buttonText };
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      text:
-        "You have completed the quiz. <br /> You got: <strong>" +
-        this.props.score +
-        "</strong> out of <strong>" +
-        this.props.total +
-        "</strong> questions right."
-    });
+  popupHandle() {
+    this.props.startQuiz();
   }
 
   render() {
-    let { title, text, buttonText } = this.state;
+    let { title, text, buttonText, score } = this.state;
 
     return (
       <View style={{ marginTop: 22 }}>
