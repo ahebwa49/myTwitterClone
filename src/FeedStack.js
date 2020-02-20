@@ -3,7 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 // import { Header } from "./Header";
 import { TouchableOpacity } from "react-native";
 import { Appbar, Avatar, useTheme } from "react-native-paper";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import LoginScreen from "./LoginScreen";
 
 import Feed from "./Feed";
 import Details from "./Details";
@@ -47,7 +47,7 @@ const Header = ({ scene, previous, navigation }) => {
 export const FeedStack = () => {
   return (
     <Stack.Navigator
-      initialRouteName="FeedList"
+      initialRouteName="Login"
       headerMode="screen"
       screenOptions={{
         header: ({ scene, previous, navigation }) => (
@@ -64,6 +64,11 @@ export const FeedStack = () => {
         name="Details"
         component={Details}
         options={{ headerTitle: "Tweet" }}
+      />
+      <Stack.Screen
+        name="Login"
+        component={LoginScreen}
+        options={{ headerTitle: "Login" }}
       />
     </Stack.Navigator>
   );
